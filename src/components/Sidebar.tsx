@@ -47,8 +47,8 @@ const Sidebar = () => {
     { link: "/", icon: <Calculator />, text: "Area & Profit Analysis" },
   ];
   const BelowMenuList: BelowMenuItem[] = [
+    { link: "/", text: "Profile" },
     { link: "/", text: "Notification" },
-    { link: "/", text: "Settings" },
     { link: "/", text: "Logout" },
   ];
 
@@ -73,8 +73,8 @@ const Sidebar = () => {
           ></div>
 
           {/* Sidebar */}
-          <div className="fixed top-0 left-0 flex flex-col w-[300px] min-w-[300px] gap-2 border-r min-h-screen p-4 bg-white z-50 opacity-90">
-            <div className="flex">
+          <div className="fixed top-0 left-0 flex flex-col w-[300px] min-w-[300px] gap-2 border-r min-h-screen p-4 bg-slate-700 z-50 opacity-90">
+            <div className="flex ">
               <Image
                 src={Logo}
                 alt="Logo"
@@ -88,15 +88,15 @@ const Sidebar = () => {
                 onClick={() => setIsOpen(false)}
                 aria-label="Close Menu"
               >
-                <X className="w-6 h-6" />
+                <X className="w-6 h-6 text-white" />
               </button>
             </div>
-            <div className="grow">
+            <div className="grow ">
               <Command style={{ overflow: "visible" }}>
                 <CommandList style={{ overflow: "visible" }}>
                   {menuList.map((items: MenuItem, key: number) => (
                     <CommandGroup key={key}>
-                      <CommandItem className="flex gap-2 cursor-pointer">
+                      <CommandItem className="flex gap-2 cursor-pointer ">
                         {items.icon}
                         {items.text}
                       </CommandItem>
@@ -126,9 +126,17 @@ const Sidebar = () => {
       <div
         className={`${
           isOpen ? "hidden" : "hidden"
-        } md:flex flex-col w-[300px] min-w-[300px] gap-2 border-r min-h-screen p-4`}
+        } md:flex flex-col w-[300px] min-w-[300px] gap-2 border-r min-h-screen p-4 bg-slate-700`}
       >
-        <Image src={Logo} alt="Logo" width={200} height={100} className="p-2" />
+        <div className="flex justify-center">
+          <Image
+            src={Logo}
+            alt="Logo"
+            width={200}
+            height={100}
+            className="p-2"
+          />
+        </div>
         <div className="grow">
           <Command style={{ overflow: "visible" }}>
             <CommandList style={{ overflow: "visible" }}>
