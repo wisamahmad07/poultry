@@ -4,6 +4,9 @@ import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
+import { decrypt } from "@/lib/session";
+import { cookies } from "next/headers";
+import LoginForm from "./login-poultry-pro-ai/page";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -21,24 +24,33 @@ export const metadata: Metadata = {
   description: "Complete poultry app with machine learning",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookie = (await cookies()).get("session")?.value;
+  const session = await decrypt(cookie);
+  console.log(session?.userId);
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable}  flex items-start justify-between`}
-      >
-        <ThemeProvider>
-          <Sidebar />
-          <main className="w-full h-full">
-            <Navbar />
-            {children}
-          </main>
-        </ThemeProvider>
-      </body>
+      {session?.userId ? (
+        <body
+          className={`${geistSans.variable} ${geistMono.variable}  flex items-start justify-between`}
+        >
+          <ThemeProvider>
+            <Sidebar />
+            <main className="w-full h-full">
+              <Navbar />
+              {children}
+            </main>
+          </ThemeProvider>
+        </body>
+      ) : (
+        <body>
+          <LoginForm />
+        </body>
+      )}
     </html>
   );
 }
