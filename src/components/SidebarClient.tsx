@@ -22,6 +22,7 @@ import { FaDisease } from "react-icons/fa";
 import { GiChicken } from "react-icons/gi";
 import Logo from "@/app/assets/poultry pro logo.png";
 import Image from "next/image";
+import Link from "next/link";
 
 type MenuItem = {
   link: string;
@@ -46,7 +47,11 @@ const SidebarClient = ({ logout }: Props) => {
     { link: "/", icon: <HeartPulse />, text: "Chicken Health Monitoring" },
     { link: "/", icon: <Egg />, text: "Egg Counting" },
     { link: "/", icon: <MessageSquare />, text: "Chatbot" },
-    { link: "/", icon: <Calculator />, text: "Area & Profit Analysis" },
+    {
+      link: "/area-profit-calculation",
+      icon: <Calculator />,
+      text: "Area & Profit Analysis",
+    },
   ];
   const BelowMenuList: BelowMenuItem[] = [
     { link: "/", text: "Profile" },
@@ -102,10 +107,12 @@ const SidebarClient = ({ logout }: Props) => {
             <CommandList style={{ overflow: "visible" }}>
               {menuList.map((items: MenuItem, key: number) => (
                 <CommandGroup key={key}>
-                  <CommandItem className="flex gap-2 cursor-pointer ">
-                    {items.icon}
-                    {items.text}
-                  </CommandItem>
+                  <Link href={items.link}>
+                    <CommandItem className="flex gap-2 cursor-pointer ">
+                      {items.icon}
+                      {items.text}
+                    </CommandItem>
+                  </Link>
                 </CommandGroup>
               ))}
             </CommandList>
@@ -149,10 +156,12 @@ const SidebarClient = ({ logout }: Props) => {
             <CommandList style={{ overflow: "visible" }}>
               {menuList.map((items: MenuItem, key: number) => (
                 <CommandGroup key={key}>
-                  <CommandItem className="flex gap-2 cursor-pointer">
-                    {items.icon}
-                    {items.text}
-                  </CommandItem>
+                  <Link href={items.link}>
+                    <CommandItem className="flex gap-2 cursor-pointer ">
+                      {items.icon}
+                      {items.text}
+                    </CommandItem>
+                  </Link>
                 </CommandGroup>
               ))}
             </CommandList>

@@ -14,7 +14,7 @@ const key = new TextEncoder().encode(process.env.Secret || "Wisam");
 const cookie = {
   name: "session",
   options: { HttpOnly: true, secure: true, sameSite: "lax", path: "/" },
-  duration: 60 * 1000,
+  duration: 600 * 1000,
 };
 
 export async function encrypt(payload: SessionPayload) {
