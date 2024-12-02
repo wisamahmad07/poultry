@@ -1,6 +1,6 @@
 import React from "react";
 import SidebarClient from "./SidebarClient";
-import Logout from "./logout";
+import Logout from "../app/login-poultry-pro-ai/components/logout";
 import { handleLogout } from "@/lib/session";
 
 const Sidebar = () => {
