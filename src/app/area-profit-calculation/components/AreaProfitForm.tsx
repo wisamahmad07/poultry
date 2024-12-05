@@ -20,7 +20,6 @@ import {
 } from "@/components/ui/select";
 import { useActionState } from "react";
 import { submitAreaProfit } from "../action";
-import { Toaster } from "@/components/ui/sonner";
 
 export default function AreaProfitForm() {
   const [data, action, isPending] = useActionState(submitAreaProfit, undefined);
@@ -40,6 +39,17 @@ export default function AreaProfitForm() {
         <CardContent className="py-0">
           <form action={action}>
             <div className="grid w-full items-center gap-4">
+              {/* Length Input */}
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Name of Batch</Label>
+                <Input
+                  id="name"
+                  name="name"
+                  type="text"
+                  placeholder="Enter name (Broiler Dec-24)"
+                  required
+                />
+              </div>
               {/* Length Input */}
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="length">Length (in meters)</Label>
@@ -115,6 +125,27 @@ export default function AreaProfitForm() {
               {data?.errors && (
                 <p className="text-red-500 text-sm mb-4">{data?.message}</p>
               )}
+              {data?.areaProfits?.map((area, index) => {
+                console.log(area); // Log the area to the console
+
+                return (
+                  <div key={index} className="mb-4">
+                    <p>
+                      <strong>Name:</strong> {area.name}
+                    </p>
+                    <p>
+                      <strong>Profit:</strong> {area.chickenType}
+                    </p>
+                    <div>
+                      <p>
+                        <strong>Details:</strong>
+                      </p>
+                      <p>{area.name}</p> {/* Render nested property */}
+                    </div>
+                  </div>
+                );
+              })}
+
               <CardFooter className="flex justify-end">
                 <Button
                   type="submit"

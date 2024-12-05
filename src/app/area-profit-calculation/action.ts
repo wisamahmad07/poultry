@@ -2,13 +2,19 @@
 "use server";
 
 import dbConnect from "@/lib/mongoose";
-import AreaProfit from "@/mongoose-models/AreaProfit";
+import AreaProfit, { AreaProfitSchema } from "@/mongoose-models/AreaProfit";
 import { z } from "zod";
-import { redirect } from "next/navigation";
 
 export async function submitAreaProfit(prevState: unknown, formData: FormData) {
+  const areaProfits: AreaProfitSchema[] = await AreaProfit.find({}).select(
+    "-_id -createdAt -updatedAt -__v"
+  );
+
+  console.log(areaProfits);
+
   // Define schema for validation
   const schema = z.object({
+    name: z.string().nonempty("Name is required"),
     length: z.preprocess(
       (val) => parseFloat(val as string),
       z.number().positive()
@@ -34,6 +40,7 @@ export async function submitAreaProfit(prevState: unknown, formData: FormData) {
 
   // Parse and validate form data
   const result = schema.safeParse({
+    name: formData.get("name"),
     length: formData.get("length"),
     height: formData.get("height"),
     chickenType: formData.get("chickenType"),
@@ -50,6 +57,7 @@ export async function submitAreaProfit(prevState: unknown, formData: FormData) {
   }
 
   const {
+    name,
     length,
     height,
     chickenType,
@@ -71,6 +79,7 @@ export async function submitAreaProfit(prevState: unknown, formData: FormData) {
 
     // Create a new AreaProfit document
     const areaProfit = new AreaProfit({
+      name,
       length,
       height,
       chickenType,
@@ -86,10 +95,13 @@ export async function submitAreaProfit(prevState: unknown, formData: FormData) {
     // Save to database
     await areaProfit.save();
 
+    areaProfits.push(areaProfit);
+    console.log(JSON.stringify(areaProfits, null, 2));
+
     // Optionally, you can redirect or return a success message
-    return { message: "Area profit data submitted successfully" }; // Replace with your success page route
+    return { message: "Area profit data submitted successfully", areaProfits }; // Replace with your success page route
   } catch (error) {
     console.error(error);
-    return { message: "Failed to submit area profit data", errors: {} };
+    return { message: "Failed to submit area profit data", errors: { error } };
   }
 }

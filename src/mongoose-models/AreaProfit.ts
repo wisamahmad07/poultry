@@ -3,6 +3,7 @@ import mongoose, { Schema, Model } from "mongoose";
 // Define TypeScript interface for the schema
 export interface AreaProfitSchema {
   _id: mongoose.Types.ObjectId;
+  name: string;
   length: number;
   height: number;
   chickenType: string;
@@ -18,6 +19,7 @@ export interface AreaProfitSchema {
 // Define the schema using the AreaProfit interface
 const AreaProfitSchema: Schema<AreaProfitSchema> = new Schema<AreaProfitSchema>(
   {
+    name: { type: String, required: true },
     length: { type: Number, required: true },
     height: { type: Number, required: true },
     chickenType: { type: String, required: true },
