@@ -26,7 +26,7 @@ const AreaProfitOutput = ({ dataGo }: Props) => {
           );
         })
       ) : (
-        <p>No area profits available.</p> // Fallback message if there are no area profits
+        <p>Select from tags</p> // Fallback message if there are no area profits
       )}
     </div>
   );
