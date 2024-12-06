@@ -1,7 +1,8 @@
-import mongoose, { Schema, Model, Document } from "mongoose";
+import mongoose, { Schema, Model, Document, ObjectId } from "mongoose";
 
 // Define TypeScript interface for the schema
 export interface AreaProfitSchema extends Document {
+  _id: string | ObjectId;
   name: string;
   chickenType: string;
   length: number;

@@ -26,8 +26,9 @@ import { useActionState } from "react";
 import { submitAreaProfit } from "../action";
 import { AreaProfitSchema } from "@/mongoose-models/AreaProfit";
 import AreaProfitTable from "./AreaProfitTable";
+import { deleteBatch } from "../deleteAction";
 interface Props {
-  initialData: AreaProfitSchema[];
+  initialData: AreaProfitSchema[] | undefined;
 }
 const AreaProfitForm = ({ initialData }: Props) => {
   const initialState = {
@@ -43,14 +44,20 @@ const AreaProfitForm = ({ initialData }: Props) => {
 
   function handleButtonClickData(name: string) {
     setName(name);
-    console.log("Clicked AreaId data: ", name);
+    console.log("Clicked AreaId NAME: ", name);
+  }
+
+  async function handleDeleteButton(_id: string) {
+    const response = await deleteBatch(_id);
+    if (response.message) {
+      data.areaProfits?.filter((area) => area._id !== response.id);
+    }
   }
 
   const foundAreaName =
     data.areaProfits?.find((area) => area.name === name) ||
-    initialData.find((area) => area.name === name);
+    initialData?.find((area) => area.name === name);
 
-  const bothData = data.areaProfits || initialData;
   return (
     <>
       <Card className="w-[300px] mb-7 md:mb-0">
@@ -168,27 +175,47 @@ const AreaProfitForm = ({ initialData }: Props) => {
       <AreaProfitTable foundArea={foundAreaName} />
       <ScrollArea className="max-h-screen rounded-md border p-4">
         <h4 className="mb-4 text-sm font-medium leading-none">Batches</h4>
-        {bothData &&
-          bothData.map((area, i) => (
-            <React.Fragment key={i}>
-              <div className="flex justify-between gap-2">
-                <Button
-                  className="text-sm mr-3"
-                  onClick={() => handleButtonClickData(area.name)}
-                >
-                  {area.name}
-                </Button>
-                <Button
-                  className="text-sm hover:text-red-700"
-                  variant="outline"
-                  onClick={() => handleButtonClickData(area.name)}
-                >
-                  Delete
-                </Button>
-              </div>
-              <Separator className="my-2" />
-            </React.Fragment>
-          ))}
+        {data?.areaProfits
+          ? data?.areaProfits?.map((area, i) => (
+              <React.Fragment key={i}>
+                <div className="flex justify-between gap-2">
+                  <Button
+                    className="text-sm mr-3"
+                    onClick={() => handleButtonClickData(area.name)}
+                  >
+                    {area.name}
+                  </Button>
+                  <Button
+                    className="text-sm hover:text-red-700"
+                    variant="outline"
+                    onClick={() => handleDeleteButton(String(area._id))}
+                  >
+                    Delete
+                  </Button>
+                </div>
+                <Separator className="my-2" />
+              </React.Fragment>
+            ))
+          : initialData?.map((area, i) => (
+              <React.Fragment key={i}>
+                <div className="flex justify-between gap-2">
+                  <Button
+                    className="text-sm"
+                    onClick={() => handleButtonClickData(area.name)}
+                  >
+                    {area.name}
+                  </Button>
+                  <Button
+                    className="text-sm hover:text-red-700"
+                    variant="outline"
+                    onClick={() => handleDeleteButton(String(area._id))}
+                  >
+                    Delete
+                  </Button>
+                </div>
+                <Separator className="my-2" />
+              </React.Fragment>
+            ))}
       </ScrollArea>
     </>
   );

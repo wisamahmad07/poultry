@@ -12,7 +12,7 @@ type State = {
 };
 export async function submitAreaProfit(state: State, formData: FormData) {
   const areaProfits = await AreaProfit.find({}).select(
-    "-_id -createdAt -updatedAt -__v"
+    "-createdAt -updatedAt -__v"
   );
 
   const schema = z.object({
@@ -69,7 +69,7 @@ export async function submitAreaProfit(state: State, formData: FormData) {
   } = result.data;
 
   const areaProfitsToSend = areaProfits.map((area) => ({
-    _id: String(area._id),
+    _id: area._id.toString(),
     name: area.name,
     length: area.length,
     height: area.height,
@@ -122,7 +122,7 @@ export async function submitAreaProfit(state: State, formData: FormData) {
     areaProfits.push(areaProfit);
 
     const areaProfitsToSend = areaProfits.map((area) => ({
-      _id: String(area._id),
+      _id: area._id.toString(),
       name: area.name,
       length: area.length,
       height: area.height,
