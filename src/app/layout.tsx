@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { decrypt } from "@/lib/session";
 import { cookies } from "next/headers";
 import LoginForm from "./login-poultry-pro-ai/page";
+import { AreaProfitStoreProvider } from "@/providers/counter-store-providers";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -38,13 +39,15 @@ export default async function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable}  flex items-start justify-between`}
         >
-          <ThemeProvider>
-            <Sidebar />
-            <main className="w-full h-full">
-              <Navbar />
-              {children}
-            </main>
-          </ThemeProvider>
+          <AreaProfitStoreProvider>
+            <ThemeProvider>
+              <Sidebar />
+              <main className="w-full h-full">
+                <Navbar />
+                {children}
+              </main>
+            </ThemeProvider>
+          </AreaProfitStoreProvider>
         </body>
       ) : (
         <body>

@@ -1,6 +1,6 @@
-import mongoose, { Schema, Model } from "mongoose";
+import mongoose, { Schema, Model, Document } from "mongoose";
 
-export interface PoultryUser {
+export interface PoultryUser extends Document {
   _id: mongoose.Types.ObjectId;
   email: string;
   password: string;
