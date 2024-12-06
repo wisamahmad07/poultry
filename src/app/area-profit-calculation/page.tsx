@@ -21,7 +21,7 @@ const Page = async () => {
   })) as AreaProfitSchema[];
 
   return (
-    <div className="flex-col md:flex justify-between m-4">
+    <div className="md:flex justify-between m-4">
       <AreaProfitForm initialData={areaProfitsToSend} />
     </div>
   );

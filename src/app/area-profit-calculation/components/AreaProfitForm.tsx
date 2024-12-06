@@ -21,19 +21,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+
 import { useActionState } from "react";
 import { submitAreaProfit } from "../action";
 import { AreaProfitSchema } from "@/mongoose-models/AreaProfit";
+import AreaProfitTable from "./AreaProfitTable";
 interface Props {
   initialData: AreaProfitSchema[];
 }
@@ -44,25 +36,24 @@ const AreaProfitForm = ({ initialData }: Props) => {
     areaProfits: null,
   };
   const [name, setName] = useState<string>("");
-
   const [data, action, isPending] = useActionState(
     submitAreaProfit,
     initialState
   );
 
-  function handleButtonClick1(name: string) {
+  function handleButtonClickData(name: string) {
     setName(name);
     console.log("Clicked AreaId data: ", name);
   }
-  function handleButtonClick2(name: string) {
-    setName(name);
-    console.log("Clicked AreaId Mongo: ", name);
-  }
-  const foundAreaName = initialData.find((area) => area.name === name);
 
+  const foundAreaName =
+    data.areaProfits?.find((area) => area.name === name) ||
+    initialData.find((area) => area.name === name);
+
+  const bothData = data.areaProfits || initialData;
   return (
     <>
-      <Card className="w-[350px] mb-7">
+      <Card className="w-[300px] mb-7 md:mb-0">
         <CardHeader>
           <CardTitle className="text-center">
             Calculate Profit with Area
@@ -174,115 +165,30 @@ const AreaProfitForm = ({ initialData }: Props) => {
           </form>
         </CardContent>
       </Card>
-      <Table className="mb-7">
-        <TableCaption>
-          {!foundAreaName
-            ? "Kindly Select any Batch For detail"
-            : `Detail of ${foundAreaName?.name} Batch`}
-        </TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Field</TableHead>
-            <TableHead>Value</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {foundAreaName ? (
-            <>
-              <TableRow>
-                <TableCell className="font-medium">Name</TableCell>
-                <TableCell>{foundAreaName.name}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Chicken Type</TableCell>
-                <TableCell>{foundAreaName.chickenType}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Length</TableCell>
-                <TableCell>{foundAreaName.length}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Height</TableCell>
-                <TableCell>{foundAreaName.height}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">
-                  Optimal No. of Chickens
-                </TableCell>
-                <TableCell>{foundAreaName.optimalNoOfChickens}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Days</TableCell>
-                <TableCell>{foundAreaName.days}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Optimal Profit</TableCell>
-                <TableCell>${foundAreaName.optimalProfit.toFixed(2)}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Investment</TableCell>
-                <TableCell>${foundAreaName.investment.toFixed(2)}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Flock Price</TableCell>
-                <TableCell>${foundAreaName.flockPrice.toFixed(2)}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Medicine Price</TableCell>
-                <TableCell>${foundAreaName.medicinePrice.toFixed(2)}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Vaccine Price</TableCell>
-                <TableCell>${foundAreaName.vaccinePrice.toFixed(2)}</TableCell>
-              </TableRow>
-            </>
-          ) : (
-            ""
-          )}
-        </TableBody>
-        {foundAreaName && (
-          <TableFooter>
-            <TableRow>
-              <TableCell colSpan={1} className="font-bold">
-                Total Investment
-              </TableCell>
-              <TableCell className="text-right font-bold">
-                $
-                {(
-                  foundAreaName.investment +
-                  foundAreaName.medicinePrice +
-                  foundAreaName.vaccinePrice
-                ).toFixed(2)}
-              </TableCell>
-            </TableRow>
-          </TableFooter>
-        )}
-      </Table>
+      <AreaProfitTable foundArea={foundAreaName} />
       <ScrollArea className="max-h-screen rounded-md border p-4">
         <h4 className="mb-4 text-sm font-medium leading-none">Batches</h4>
-        {data?.areaProfits
-          ? data?.areaProfits?.map((area) => (
-              <React.Fragment key={String(area._id)}>
+        {bothData &&
+          bothData.map((area, i) => (
+            <React.Fragment key={i}>
+              <div className="flex justify-between gap-2">
                 <Button
-                  className="text-sm"
-                  onClick={() => handleButtonClick1(area.name)}
+                  className="text-sm mr-3"
+                  onClick={() => handleButtonClickData(area.name)}
                 >
                   {area.name}
                 </Button>
-                <Separator className="my-2" />
-              </React.Fragment>
-            ))
-          : initialData?.map((area, i) => (
-              <React.Fragment key={i}>
                 <Button
-                  className="text-sm"
-                  onClick={() => handleButtonClick2(area.name)}
+                  className="text-sm hover:text-red-700"
+                  variant="outline"
+                  onClick={() => handleButtonClickData(area.name)}
                 >
-                  {area.name}
+                  Delete
                 </Button>
-                <Separator className="my-2" />
-              </React.Fragment>
-            ))}
+              </div>
+              <Separator className="my-2" />
+            </React.Fragment>
+          ))}
       </ScrollArea>
     </>
   );
