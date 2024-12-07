@@ -48,9 +48,17 @@ const AreaProfitForm = ({ initialData }: Props) => {
   }
 
   async function handleDeleteButton(_id: string) {
-    const response = await deleteBatch(_id);
-    if (response.message) {
-      data.areaProfits?.filter((area) => area._id !== response.id);
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this user?"
+    );
+    if (confirmDelete) {
+      const response = await deleteBatch(_id);
+      if (response.message) {
+        data.areaProfits =
+          data.areaProfits?.filter(
+            (area) => String(area._id) !== String(response.id)
+          ) || null;
+      }
     }
   }
 

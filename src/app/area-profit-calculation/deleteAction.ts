@@ -21,7 +21,10 @@ export async function deleteBatch(id?: string) {
     // Revalidate path to update the user list page
     revalidatePath("/area-profit-calculation");
 
-    return { message: "Batch deleted successfully", id };
+    return {
+      message: "Batch deleted successfully",
+      id,
+    };
   } catch (error) {
     console.error("Error deleting Batch:", error);
 
