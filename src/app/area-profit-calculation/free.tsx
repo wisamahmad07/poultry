@@ -1,16 +1,6 @@
 "use client";
 import React, { useState } from "react";
 
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -58,12 +48,17 @@ const AreaProfitForm = ({ initialData }: Props) => {
   }
 
   async function handleDeleteButton(_id: string) {
-    const response = await deleteBatch(_id);
-    if (response.message) {
-      data.areaProfits =
-        data.areaProfits?.filter(
-          (area) => String(area._id) !== String(response.id)
-        ) || null;
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this user?"
+    );
+    if (confirmDelete) {
+      const response = await deleteBatch(_id);
+      if (response.message) {
+        data.areaProfits =
+          data.areaProfits?.filter(
+            (area) => String(area._id) !== String(response.id)
+          ) || null;
+      }
     }
   }
 
@@ -198,33 +193,13 @@ const AreaProfitForm = ({ initialData }: Props) => {
                   >
                     {area.name}
                   </Button>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="destructive">Delete</Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
-                      <DialogHeader>
-                        <DialogTitle>Delete AreaProfit Calculation</DialogTitle>
-                        <DialogDescription>
-                          This action cannot be undone. Do you really want to
-                          delete this Idea?
-                        </DialogDescription>
-                      </DialogHeader>
-                      <DialogFooter>
-                        <DialogClose asChild>
-                          <Button type="button" variant="secondary">
-                            Close
-                          </Button>
-                        </DialogClose>
-                        <Button
-                          variant="destructive"
-                          onClick={() => handleDeleteButton(String(area._id))}
-                        >
-                          Delete
-                        </Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
+                  <Button
+                    className="text-sm hover:text-red-700"
+                    variant="outline"
+                    onClick={() => handleDeleteButton(String(area._id))}
+                  >
+                    Delete
+                  </Button>
                 </div>
                 <Separator className="my-2" />
               </React.Fragment>
@@ -238,33 +213,13 @@ const AreaProfitForm = ({ initialData }: Props) => {
                   >
                     {area.name}
                   </Button>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="destructive">Delete</Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
-                      <DialogHeader>
-                        <DialogTitle>Delete AreaProfit Calculation</DialogTitle>
-                        <DialogDescription>
-                          This action cannot be undone. Do you really want to
-                          delete this Idea?
-                        </DialogDescription>
-                      </DialogHeader>
-                      <DialogFooter>
-                        <DialogClose asChild>
-                          <Button type="button" variant="secondary">
-                            Close
-                          </Button>
-                        </DialogClose>
-                        <Button
-                          variant="destructive"
-                          onClick={() => handleDeleteButton(String(area._id))}
-                        >
-                          Delete
-                        </Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
+                  <Button
+                    className="text-sm hover:text-red-700"
+                    variant="outline"
+                    onClick={() => handleDeleteButton(String(area._id))}
+                  >
+                    Delete
+                  </Button>
                 </div>
                 <Separator className="my-2" />
               </React.Fragment>
