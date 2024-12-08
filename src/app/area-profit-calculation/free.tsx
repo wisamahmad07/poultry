@@ -23,10 +23,10 @@ import {
 } from "@/components/ui/select";
 
 import { useActionState } from "react";
-import { submitAreaProfit } from "../action";
+import { submitAreaProfit } from "./action";
 import { AreaProfitSchema } from "@/mongoose-models/AreaProfit";
-import AreaProfitTable from "./AreaProfitTable";
-import { deleteBatch } from "../deleteAction";
+import AreaProfitTable from "./components/AreaProfitTable"; 
+import { deleteBatch } from "./deleteAction";
 interface Props {
   initialData: AreaProfitSchema[] | undefined;
 }
