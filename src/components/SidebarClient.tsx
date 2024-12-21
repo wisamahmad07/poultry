@@ -41,8 +41,16 @@ const SidebarClient = ({ logout }: Props) => {
   const menuList: MenuItem[] = [
     { link: "/", icon: <LayoutDashboard />, text: "Dashboard" },
     { link: "/", icon: <RectangleEllipsis />, text: "Batch Management" },
-    { link: "/", icon: <Box />, text: "Feed Stock Management" },
-    { link: "/", icon: <FaDisease />, text: "Disease & Medicine" },
+    {
+      link: "/feed-management-stock-of-shed",
+      icon: <Box />,
+      text: "Feed Stock Management",
+    },
+    {
+      link: "/disease-and-medicine-suggestion",
+      icon: <FaDisease />,
+      text: "Disease & Medicine",
+    },
     { link: "/", icon: <GiChicken />, text: "Chicken System" },
     { link: "/", icon: <HeartPulse />, text: "Chicken Health Monitoring" },
     { link: "/", icon: <Egg />, text: "Egg Counting" },
